@@ -1,0 +1,46 @@
+<html>
+	<head>
+		  <title>Dictionary</title>
+		  <meta charset="utf-8">
+		  <meta name="viewport" content="width=device-width, initial-scale=1">
+		  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	</head>
+	<body>
+		<div class="jumbotron text-center">
+		  <h1>Oxford Dictionary</h1> 
+		</div>
+
+		<form class = "text-center", method="get">
+			{{ form.as_p }}
+			<button type="submit" class="btn btn-primary btn-sm">Search</button>
+		</form>
+		<div class = "container">
+			{% if search_result %}
+			  <hr>
+			  {% if search_result.success %}
+				<h1>{{ search_result.word }}</h1>
+				{% for result in search_result.results %}
+				  
+				  {% for lexicalentry in result.lexicalEntries %}
+					<h1><span class="badge badge-secondary">{{ lexicalentry.lexicalCategory.text }}</span></h1>
+					<ol>
+					  {% for entry in lexicalentry.entries %}
+						{% for sense in entry.senses %}
+						  {% for definition in sense.definitions %}
+							<li>{{ definition }}</li>
+						  {% endfor %}
+						{% endfor %}
+					  {% endfor %}
+					</ol>
+				  {% endfor %}
+				{% endfor %}
+			  {% else %}
+				<p><em>{{ search_result.message }}</em></p>
+			  {% endif %}
+			{% endif %}
+		</div>
+		
+	</body>
+</html>
